@@ -179,11 +179,33 @@
         </div>
         <div class="form-group">
             <label for="loginClass">🏫 請選取您的班別：</label>
-            <select id="loginClass"></select>
+            <select id="loginClass">
+                <script>
+                    (function() {
+                        var html = "";
+                        for (var grade = 1; grade <= 6; grade++) {
+                            ['A', 'B', 'C', 'D'].forEach(function(letter) {
+                                html += '<option value="' + grade + letter + '">' + grade + letter + ' 班</option>';
+                            });
+                        }
+                        document.write(html);
+                    })();
+                </script>
+            </select>
         </div>
         <div class="form-group">
             <label for="loginSeat">🔢 請選取您的學號：</label>
-            <select id="loginSeat"></select>
+            <select id="loginSeat">
+                <script>
+                    (function() {
+                        var html = "";
+                        for (var i = 1; i <= 35; i++) {
+                            html += '<option value="' + i + '">' + i + ' 號</option>';
+                        }
+                        document.write(html);
+                    })();
+                </script>
+            </select>
         </div>
         <button id="loginSubmitBtn" onclick="loginStudent()" style="background-color: var(--primary); font-size: 18px; margin-top: 10px;">雲端同步登入 🚀</button>
     </div>
@@ -380,38 +402,6 @@
     let wrongProblemBook = [];
     let learningStats = {};
 
-    // 💡 智慧選單監聽器：確保在頁面一載入時，1A~6D 與 1~35 號下拉清單秒速動態建立
-    (function initLoginDropdowns() {
-        const checkExist = setInterval(function() {
-            const classSelect = document.getElementById('loginClass');
-            const seatSelect = document.getElementById('loginSeat');
-            
-            if (classSelect && seatSelect) {
-                clearInterval(checkExist);
-                classSelect.innerHTML = "";
-                seatSelect.innerHTML = "";
-                
-                // 產生 1A 至 6D 班級
-                for (let grade = 1; grade <= 6; grade++) {
-                    ['A', 'B', 'C', 'D'].forEach(letter => {
-                        let opt = document.createElement('option');
-                        opt.value = `${grade}${letter}`; 
-                        opt.innerText = `${grade}${letter} 班`;
-                        classSelect.appendChild(opt);
-                    });
-                }
-                
-                // 產生 1 至 35 號
-                for (let i = 1; i <= 35; i++) {
-                    let opt = document.createElement('option');
-                    opt.value = i; 
-                    opt.innerText = `${i} 號`;
-                    seatSelect.appendChild(opt);
-                }
-            }
-        }, 50);
-    })();
-
     function toggleOverlay(show, text="雲端魔法矩陣通訊中...") {
         const overlay = document.getElementById('loadingOverlay');
         if (overlay) {
@@ -435,7 +425,6 @@
             body: JSON.stringify({ action: "load", userKey: currentUserKey })
         })
         .then(() => {
-            // 從高效連線快取中提取歷程，若完全為新帳號則初始化新物件
             let cached = localStorage.getItem(`PolyCloudCache_${currentUserKey}`);
             if(cached) {
                 let parsed = JSON.parse(cached);
@@ -588,6 +577,7 @@
         loadPolynomialToStage();
     }
 
+    // 錯題本
     function initReviewSession() {
         session.currentIdx = 0; session.totalQuestions = wrongProblemBook.length;
         session.questionList = [...wrongProblemBook]; loadPolynomialToStage();
