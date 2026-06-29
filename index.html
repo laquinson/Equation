@@ -52,11 +52,11 @@
         .step-panel { display: none; }
         .step-panel.active { display: block; }
         
-        .form-group { margin-bottom: 25px; }
+        .form-group { margin-bottom: 25px; width: 100%; box-sizing: border-box; }
         label { display: block; margin-bottom: 8px; font-weight: bold; color: #4a5568; }
         
         input[type="text"], input[type="number"], select {
-            width: 100%; padding: 12px; border: 2px solid #ccd1d9; border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #fff;
+            width: 100%; padding: 14px; border: 2px solid #ccd1d9; border-radius: 8px; font-size: 18px; box-sizing: border-box; background: #fff;
         }
 
         .mode-selection-box { display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
@@ -108,23 +108,19 @@
         .feedback.info { background-color: #e3f2fd; color: #0d47a1; border-left: 6px solid #1976d2; }
 
         #solveBtn { background-color: var(--warning); color: #111; font-size: 18px; margin: 15px 0; display: none; }
-        .teaching-row { display: flex; gap: 20px; margin-top: 25px; flex-direction: column; }
+        .teaching-row { display: flex; gap: 20px; margin-top: 25px; flex-direction: column; width: 100%; box-sizing: border-box; }
         @media(min-width: 768px) { .teaching-row { flex-direction: row; } }
-        .teaching-column { flex: 1; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; }
+        .teaching-column { flex: 1; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; box-sizing: border-box; }
         .teaching-column h3 { margin-top: 0; border-bottom: 2px solid var(--primary); padding-bottom: 8px; color: var(--primary); }
         
         .math-step-box { font-family: 'Courier New', Courier, monospace; background: #222; color: #00ff00; padding: 15px; border-radius: 6px; font-size: 15px; line-height: 1.8; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
         .math-step-box .active-line { background: #333; color: #fffb00; font-weight: bold; padding: 2px 5px; border-radius: 3px; }
         
-        /* 針對逐步引導進行排版優化 */
-        .block-form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; width: 100%; }
-        .block-form label { font-size: 15px; color: #334155; margin-bottom: 0; }
-        .block-form input[type="text"] { font-size: 18px; padding: 14px; letter-spacing: 1px; width: 100%; }
-        
-        .inline-form { display: flex; gap: 10px; align-items: center; margin-top: 15px; width: 100%; }
-        .inline-form span { font-weight: bold; white-space: nowrap; font-size: 15px; }
-        .inline-form input[type="text"] { font-size: 18px; padding: 10px; }
-        .inline-form button, .block-form button { width: 100%; background-color: var(--success); font-size: 16px; margin-top: 5px; }
+        /* 徹底修正：所有引導輸入區域一律改為「垂直區塊型排版」，杜絕橫向空間不足擠壓問題 */
+        .block-form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; width: 100%; box-sizing: border-box; }
+        .block-form label { font-size: 16px; color: #334155; margin-bottom: 2px; }
+        .block-form input[type="text"] { font-size: 18px; padding: 14px; letter-spacing: 1px; width: 100%; display: block; box-sizing: border-box; }
+        .block-form button { width: 100%; background-color: var(--success); font-size: 16px; margin-top: 5px; padding: 12px; }
         
         .supported-types { background: #f0f4f8; padding: 10px; border-radius: 6px; font-size: 14px; color: #555; margin-bottom: 15px; }
 
@@ -328,10 +324,10 @@
                 <h3>🛠️ 魔法陣逐步操作</h3>
                 
                 <div id="interactiveStage1" style="display: none;">
-                    <p id="stage1Text"><strong>第一步：解開束縛（去括號）</strong></p>
-                    <p style="color: #666; font-size:14px;">💡 提示：跨越減號分配律時，後半段括號內所有項都要變號喔！</p>
                     <div class="block-form">
-                        <label for="unbracketInput"><b>請輸入去括號後的完整串聯式：</b></label>
+                        <label><strong>第一步：解開束縛（去括號）</strong></label>
+                        <p style="color: #666; font-size:14px; margin: 0 0 5px 0;">💡 提示：跨越減號分配律時，後半段括號內所有項都要變號喔！</p>
+                        <label for="unbracketInput"><b>請在下方輸入去括號後的完整串聯式：</b></label>
                         <input type="text" id="unbracketInput" placeholder="例如: 3a+5-2a+3">
                         <button onclick="executeUnbracketStage()">確認去括號</button>
                     </div>
@@ -339,14 +335,14 @@
 
                 <div id="interactiveStage2" style="display: none;">
                     <p id="stage2Text"><strong>第二步：同類歸宗（同類項係數合併算式）</strong></p>
-                    <p style="color: #4f46e5; font-size:14px;">💡 提示：請在此處填入**係數合併的算式**。例如原式若有 6x 與 -2x，請填入 <code>6-2</code> 或是 <code>6+(-2)</code>。</p>
+                    <p style="color: #4f46e5; font-size:14px; margin-bottom: 10px;">💡 重要提示：請在此處填入<b>係數合併的計算過程算式</b>。例如原式若有 6x 與 -2x，請填入 <code>6-2</code> 或是 <code>6+(-2)</code>，不要直接寫心算結果數字喔！</p>
                     <div id="combineFormGroup" class="block-form"></div>
                     <button style="margin-top:15px;" onclick="executeCombineStage()">確認係數算式</button>
                 </div>
 
                 <div id="interactiveStage3" style="display: none;">
-                    <p><strong>第三步：魔法集成（宣告最終結果）</strong></p>
                     <div class="block-form">
+                        <p><strong>第三步：魔法集成（宣告最終結果）</strong></p>
                         <label for="finalAnsInput" id="stage3Text">請拼湊並串聯最終的多項式：</label>
                         <input type="text" id="finalAnsInput" placeholder="例如: 4x+8">
                         <button onclick="executeFinal()">宣告最終結果</button>
@@ -754,7 +750,7 @@
     function startInteractiveSolving() {
         document.getElementById('solveBtn').style.display = "none"; document.getElementById('teachingZone').style.display = "flex";
         document.getElementById('interactiveStage1').style.display = "block"; document.getElementById('interactiveStage2').style.display = "none"; document.getElementById('interactiveStage3').style.display = "none";
-        document.getElementById('stage3Text').innerText = `第三步：請拼湊並串聯最終包含 ${poly.v1} 的最簡多項式：`;
+        document.getElementById('stage3Text').innerText = `請拼湊並串聯最終包含 ${poly.v1} 的最簡多項式結果：`;
         document.getElementById('unbracketInput').value = "";
         renderMathSteps(1);
         if (session.currentMode === 'CHALLENGE' && !session.hasAddedToWrongBookThisQuestion) {
@@ -783,42 +779,41 @@
         } else { alert(`去括號有誤，如果是減法後半段括號內的所有項都要變號喔！`); }
     }
 
-    // 💡 教學微調：動態記錄目標運算值，並要求學生填寫「算式」而不是心算答案
     let targetFormulaV1 = "";
     let targetFormulaV2OrC = "";
 
+    // 💡 關鍵檢查點：此處動態產出的輸入框，已全數改為 type="text"，確保 iPad 可以打加減號算式！
     function setupCombineUI() {
         let cSign = poly.sign === '+' ? poly.c : -poly.c;
-        targetFormulaV1 = `${poly.a}${fmtSign(cSign)}`; // 例如 "6-2" 或 "3+5"
+        targetFormulaV1 = `${poly.a}${fmtSign(cSign)}`; 
         
-        let html = `<label><b>請輸入各同類項合併的「係數算式」：</b></label>`;
-        html += `<div class="form-group"><label>✏️ ${poly.v1} 項的係數算式（例如 ${poly.a}${fmtSign(cSign)}）：</label><input type="text" id="coeffV1Input" placeholder="請填入合併算式"></div>`;
+        let html = `<label><b>請輸入各同類項合併的「係數計算過程算式」：</b></label>`;
+        html += `<div class="form-group"><label>✏️ ${poly.v1} 項的係數算式過程（例如填寫： ${poly.a}${fmtSign(cSign)}）：</label><input type="text" id="coeffV1Input" placeholder="請填入加減合併算式"></div>`;
         
         if(poly.targetVarType === 'v1_v2') {
             let dActualSign = poly.sign === '+' ? poly.d : -poly.d;
             targetFormulaV2OrC = `${poly.b}${fmtSign(dActualSign)}`;
-            html += `<div class="form-group"><label>✏️ ${poly.v2} 項的係數算式（例如 ${poly.b}${fmtSign(dActualSign)}）：</label><input type="text" id="coeffV2Input" placeholder="請填入合併算式"></div>`;
+            html += `<div class="form-group"><label>✏️ ${poly.v2} 項的係數算式過程（例如填寫： ${poly.b}${fmtSign(dActualSign)}）：</label><input type="text" id="coeffV2Input" placeholder="請填入加減合併算式"></div>`;
         } else {
             let fSign = poly.sign === '+' ? poly.f : -poly.f;
             targetFormulaV2OrC = `${poly.e}${fmtSign(fSign)}`;
-            html += `<div class="form-group"><label>✏️ 常數項的合併算式（例如 ${poly.e}${fmtSign(fSign)}）：</label><input type="text" id="coeffCInput" placeholder="請填入合併算式"></div>`;
+            html += `<div class="form-group"><label>✏️ 常數項的合併算式過程（例如填寫： ${poly.e}${fmtSign(fSign)}）：</label><input type="text" id="coeffCInput" placeholder="請填入加減合併算式"></div>`;
         }
         document.getElementById('combineFormGroup').innerHTML = html;
     }
 
-    // 💡 智慧數學公式解析器：支援算式 eval 驗證，並防範安全性，且驗證長度確保學生輸入的是算式而非純數字
+    // 💡 智慧代數核心檢查器：判斷學生輸入的是否為算式
     function checkIsFormulaCorrect(userInput, expectedFormula, targetValue) {
         let cleaned = userInput.replace(/\s+/g, '');
         if(!cleaned) return false;
         
-        // 老師要求學生必須輸入算式（例如 6-2），如果學生偷懶直接寫結果數字（例如 4），則提示需要寫出過程
+        // 強制檢查：若學生填寫的是心算完的單純數字，且不等於原定公式，會提示需要寫過程
         if (cleaned == String(targetValue) && cleaned !== expectedFormula && expectedFormula.replace(/\+/g,'') !== cleaned) {
-            alert("💡 老師提示：這裡需要填入完整的「合併算式過程」（例如：6-2）而不是直接計算出來的答案喔！");
+            alert("💡 老師提示：此處要填入「係數的計算過程算式」（如 6-2），請不要直接填寫心算完的單個數字答案喔！");
             return false;
         }
 
         try {
-            // 安全限制：只允許數字、加、減、乘、除與括號
             if(/[^0-9+\-*/()]/g.test(cleaned)) return false;
             let userCalcResult = Function('"use strict"; return (' + cleaned + ')')();
             return userCalcResult === targetValue;
@@ -832,23 +827,23 @@
         let uV1Str = document.getElementById('coeffV1Input').value;
         
         let isV1Correct = checkIsFormulaCorrect(uV1Str, targetFormulaV1, tV1);
-        if(!isV1Correct) { alert(`❌ ${poly.v1} 項的合併算式有誤，請再對照上方黑板檢查係數。`); return; }
+        if(!isV1Correct) { alert(`❌ ${poly.v1} 項的合併算式過程不正確，請對照上方多項式黑板重新填寫。`); return; }
 
         let isSecondCorrect = false;
         if(poly.targetVarType === 'v1_v2') {
             let tV2 = poly.sign === '+' ? (poly.b + poly.d) : (poly.b - poly.d);
             let uV2Str = document.getElementById('coeffV2Input').value;
             isSecondCorrect = checkIsFormulaCorrect(uV2Str, targetFormulaV2OrC, tV2);
-            if(!isSecondCorrect) { alert(`❌ ${poly.v2} 項的合併算式有誤，請再試一次。`); return; }
+            if(!isSecondCorrect) { alert(`❌ ${poly.v2} 項的合併算式過程不正確，請再試一次。`); return; }
         } else {
             let tC = poly.sign === '+' ? (poly.e + poly.f) : (poly.e - poly.f);
             let uCStr = document.getElementById('coeffCInput').value;
             isSecondCorrect = checkIsFormulaCorrect(uCStr, targetFormulaV2OrC, tC);
-            if(!isSecondCorrect) { alert(`❌ 常數項的合併算式有誤，請再試一次。`); return; }
+            if(!isSecondCorrect) { alert(`❌ 常數項的合併算式過程不正確，請再試一次。`); return; }
         }
 
         if(isV1Correct && isSecondCorrect) {
-            alert("🎯 係數合併算式完全正確！即將進入最後一步：魔法集成！");
+            alert("🎯 算式過程完全正確！概念非常清晰，進入最後一步：魔法集成！");
             document.getElementById('interactiveStage2').style.display = "none"; 
             document.getElementById('interactiveStage3').style.display = "block";
             document.getElementById('finalAnsInput').value = "";
@@ -871,7 +866,7 @@
                 document.getElementById('feedbackArea').className = "feedback success";
             }
             setupNextButtonLabel(); renderMathSteps(4);
-        } else { alert("格式錯誤，請拼湊剛剛計算出來的最終最簡化簡結果。"); }
+        } else { alert("格式錯誤，請拼湊剛才計算出的最終最簡化簡結果。"); }
     }
 
     function advanceQuestion() {
